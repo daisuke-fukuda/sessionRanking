@@ -1,6 +1,6 @@
 <?php
 
-$searchName = "ダイスケ";
+$searchName = "棟梁";
 
 
 $sql = "select * from rankings where ";
@@ -24,9 +24,16 @@ foreach($result as $one) {
 //    var_dump($values);
     $songCount ++;
 
-
+    // 複数パート掛け持ちの場合に重複してカウントされちゃう対応
+    $valuesDuplicateCheck = array();
     for($i = 0; $i < sizeof($values); $i++) {
         $value = $values[$i];
+        // 複数パートエントリー
+        if (in_array($value, $valuesDuplicateCheck)) {
+            continue;
+        }
+        $valuesDuplicateCheck[] = $value;
+
         // id、曲名等はスルー
         if ($i < 5) {
             continue;
@@ -57,7 +64,7 @@ foreach($result as $one) {
 
 arsort($count);
 
-
+echo $searchName.PHP_EOL;
 echo "曲数：". $songCount.PHP_EOL;
 foreach($count as $name => $resultCount) {
     echo $name. " => ". $resultCount. PHP_EOL;
