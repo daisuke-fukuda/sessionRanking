@@ -79,8 +79,8 @@ function download($path) {
 
     $response = curl_exec($curl);
 
-    $urlSplitArray = explode("/", $cvsURL);
-    $fileName = $urlSplitArray[sizeof($urlSplitArray) -1 ].".csv";
+    $urlSplitArray = explode("/", $path);
+    $fileName = $urlSplitArray[sizeof($urlSplitArray) -4 ].".csv";
 
     file_put_contents($fileName, $response);
 

@@ -1,6 +1,6 @@
 <?php
 
-$searchName = "棟梁";
+$searchName = "ダイスケ";
 
 
 $sql = "select * from rankings where ";
@@ -31,10 +31,16 @@ foreach($result as $one) {
         if ($i < 5) {
             continue;
         }
+        if (!$value) {
+            continue;
+        }
         if ($value == "成立")  {
             continue;
         }
         if ($value == "なし")  {
+            continue;
+        }
+        if ($value == "未エントリー") {
             continue;
         }
         if ($value == $searchName) {
@@ -44,7 +50,7 @@ foreach($result as $one) {
         if (array_key_exists($value, $count)) {
             $count[$value] ++;
         } else {
-            $count[$value] = 0;
+            $count[$value] = 1;
         }
     }
 }
