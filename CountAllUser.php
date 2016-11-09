@@ -1,15 +1,7 @@
 <?php
 
-$searchName = "のえる";
-
-
-$sql = "select * from rankings where ";
-for($i = 1; $i <= 20; $i++) {
-    $sql .= "column".$i ." = ". '"'. $searchName. '"';
-    if ($i < 20) {
-        $sql .= " or ";
-    }
-}
+// 全部とってくるよ
+$sql = "select * from rankings";
 //echo $sql;
 
 
@@ -19,21 +11,16 @@ exec($command, $result);
 
 $count = array();
 $songCount = 0;
+$users = array();
+
 foreach($result as $one) {
     $values = explode("\t", $one);
 //    var_dump($values);
     $songCount ++;
 
-    // 複数パート掛け持ちの場合に重複してカウントされちゃう対応
-    $valuesDuplicateCheck = array();
+
     for($i = 0; $i < sizeof($values); $i++) {
         $value = $values[$i];
-        // 複数パートエントリー
-        if (in_array($value, $valuesDuplicateCheck)) {
-            continue;
-        }
-        $valuesDuplicateCheck[] = $value;
-
         // id、曲名等はスルー
         if ($i < 5) {
             continue;
@@ -54,18 +41,13 @@ foreach($result as $one) {
             continue;
         }
 
-        if (array_key_exists($value, $count)) {
-            $count[$value] ++;
-        } else {
-            $count[$value] = 1;
-        }
+        $users[] = $value;
     }
 }
 
-arsort($count);
 
-echo $searchName.PHP_EOL;
+echo "全部カウントしてみたよ";
 echo "曲数：". $songCount.PHP_EOL;
-foreach($count as $name => $resultCount) {
-    echo $name. " => ". $resultCount. PHP_EOL;
-}
+echo "のべ参加人数（パート重複は重複してカウント）:".sizeof($users).PHP_EOL;
+$usersUnique = array_unique($users);
+echo "人数:".sizeof($usersUnique).PHP_EOL;
